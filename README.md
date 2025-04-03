@@ -1,6 +1,22 @@
 # RAM Limiter
 
-RAM Limiter is a utility designed to optimise the RAM usage of any application through the process of Garbage Collection (GC).
+A Python utility designed to optimize RAM usage of applications through Windows memory management APIs.
+
+## Features
+
+- Monitor and limit RAM usage for multiple applications simultaneously
+- Interactive menu interface and command-line options
+- Support for popular applications:
+  - Discord
+  - Google Chrome
+  - OBS Studio
+  - Visual Studio Code
+  - Custom processes
+- Real-time memory usage statistics
+- Configurable monitoring intervals
+- Adjustable memory limits per process
+- Automatic logging of memory usage
+- Admin privilege elevation when needed
 
 ## Overview
 Old Video, Now you can limit any application and as many applications.
@@ -17,17 +33,72 @@ The RAM Limiter is a standalone solution that eliminates the need for other soft
 
 ## Usage
 
-RAM Limiter works by automatically freeing up the RAM that is being used by any application. This not only provides your device with more available memory but also results in less battery consumption.
+### Interactive Mode
 
-Upon launching the application, you can choose the application you want to optimise - Chrome, Discord, or OBS. These are the applications that are known to consume significant RAM resources, but the tool can be used with any application.
+Run the script without arguments to use the interactive menu:
+
+```sh
+python ram_limiter.py
+```
+
+The menu offers options to:
+1. Limit Discord
+2. Limit Chrome
+3. Limit OBS
+4. Limit Visual Studio Code
+5. Limit Discord & Chrome together
+6. Limit Custom Process(es)
+0. Exit
+
+### Command Line Options
+
+```sh
+python ram_limiter.py [options]
+
+Options:
+  --discord         Limit Discord RAM usage
+  --chrome         Limit Chrome RAM usage
+  --obs            Limit OBS RAM usage
+  --vscode         Limit Visual Studio Code RAM usage
+  --custom [PROCESSES...]
+                   Limit RAM usage for custom processes
+  --interval N     Monitoring interval in seconds (default: 5)
+  --interactive    Use interactive menu
+  --test           Run a memory-hogging test
+```
+
+### Examples
+
+Limit Discord and Chrome with 5-second monitoring interval:
+```sh
+python ram_limiter.py --discord --chrome --interval 5
+```
+
+Monitor custom applications:
+```sh
+python ram_limiter.py --custom firefox spotify --interval 10
+```
+
+## System Requirements
+
+- Windows operating system
+- Python 3.x
+- Required Python packages:
+  - psutil
+  - ctypes
+
+## Notes
+
+- The tool requires administrator privileges for optimal performance
+- Memory limits are capped at 2GB by default per process
+- Default memory limit is set to 75% of total system RAM
+- The tool logs all activities to `ram_limiter.log`
 
 ## Inspiration
 [This Tool](https://github.com/farajyeet/discord-ram-limiter) is no longer maintained. It was found to consume more CPU resources than Discord itself, resulting in a trade-off between free CPU and free RAM. This not only led to increased power usage but also negated the purpose of freeing up RAM.
 
-
 Our version of the RAM Limiter improves upon the original by focusing on efficient memory management without overutilising the CPU. Some parts of the code were reused from the original repository and [our other project](https://github.com/0vm/Pinger).
 
-Thank you to @luke-beep and @hypn0tick for contributing / feedback!
 
 ## Tags
 
@@ -47,4 +118,7 @@ OBS RAM optimization,
 OBS RAM optimisation, 
 OBS memory leak troubleshooting, 
 High RAM usage in OBS, 
-Limit OBS RAM usage
+Limit OBS RAM usage,
+VS Code RAM management,
+Multi-process RAM limiter,
+Windows memory optimization tool
