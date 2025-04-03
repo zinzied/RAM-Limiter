@@ -1,0 +1,112 @@
+1522 INFO: PyInstaller: 6.12.0, contrib hooks: 2025.1
+1523 INFO: Python: 3.12.8
+1596 INFO: Platform: Windows-10-10.0.19045-SP0
+1596 INFO: Python environment: C:\Users\HOPE\AppData\Local\Programs\Python\Python312
+1598 INFO: wrote C:\Users\HOPE\Desktop\Tunisia-sat\New Xtream Player\output\PyInstallerGUI\ram_limiter_gui.spec
+1610 INFO: Module search paths (PYTHONPATH):
+['C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\pyinstaller.exe',
+ 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\python312.zip',
+ 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\DLLs',
+ 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib',
+ 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312',
+ 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages',
+ 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\decompyle3-3.9.2-py3.12.egg',
+ 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\win32',
+ 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\win32\\lib',
+ 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\Pythonwin',
+ 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\setuptools\\_vendor',
+ 'C:\\Users\\HOPE\\Desktop\\RAMLIM\\RAM-Limiter']
+5452 INFO: checking Analysis
+5453 INFO: Building Analysis because Analysis-00.toc is non existent
+5453 INFO: Running Analysis Analysis-00.toc
+5453 INFO: Target bytecode optimization level: 0
+5453 INFO: Initializing module dependency graph...
+5455 INFO: Initializing module graph hook caches...
+5498 INFO: Analyzing modules for base_library.zip ...
+10607 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+17153 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+19833 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+21161 INFO: Caching module dependency graph...
+21412 INFO: Looking for Python shared library...
+21435 INFO: Using Python shared library: C:\Users\HOPE\AppData\Local\Programs\Python\Python312\python312.dll
+21436 INFO: Analyzing C:\Users\HOPE\Desktop\RAMLIM\RAM-Limiter\ram_limiter_gui.py
+21536 INFO: Processing standard module hook 'hook-PyQt5.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+21862 INFO: Processing standard module hook 'hook-PyQt5.QtWidgets.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+22249 INFO: Processing standard module hook 'hook-PyQt5.QtCore.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+22678 INFO: Processing standard module hook 'hook-PyQt5.QtGui.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+23640 INFO: Processing standard module hook 'hook-psutil.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+23847 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+24093 INFO: Processing standard module hook 'hook-pyqtgraph.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+2305 INFO: No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+2798 WARNING: Failed to collect submodules for 'pyqtgraph.jupyter' because importing 'pyqtgraph.jupyter' raised: ModuleNotFoundError: No module named 'jupyter_rfb'
+28762 INFO: hook-pyqtgraph: selected 'PyQt5' as Qt bindings because hook for 'PyQt5' has been run before.
+28807 INFO: Processing standard module hook 'hook-numpy.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+47648 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+48142 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+48520 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+50203 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+55698 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+55713 INFO: Processing standard module hook 'hook-PyQt5.uic.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+56561 INFO: Processing pre-find-module-path hook 'hook-PyQt5.uic.port_v2.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+56725 INFO: Processing standard module hook 'hook-PyQt5.QtSvg.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+56955 INFO: Processing standard module hook 'hook-PyQt5.QtTest.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+57169 INFO: Processing standard module hook 'hook-shiboken6.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+57833 INFO: Processing standard module hook 'hook-h5py.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+58126 INFO: Processing standard module hook 'hook-IPython.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+61654 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+61657 INFO: SetuptoolsInfo: initializing cached setuptools info...
+72746 INFO: Processing standard module hook 'hook-xml.dom.domreg.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+73142 INFO: Processing standard module hook 'hook-matplotlib.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+73862 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+73885 INFO: Processing standard module hook 'hook-packaging.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+74029 INFO: Processing pre-safe-import-module hook 'hook-gi.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+74524 INFO: Processing standard module hook 'hook-matplotlib.backend_bases.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+74744 INFO: Processing standard module hook 'hook-PIL.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+74940 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+77025 INFO: Processing standard module hook 'hook-pycparser.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+77884 INFO: Processing standard module hook 'hook-setuptools.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+77906 INFO: Processing pre-safe-import-module hook 'hook-distutils.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+77948 INFO: Processing pre-safe-import-module hook 'hook-jaraco.functools.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+77964 INFO: Processing pre-safe-import-module hook 'hook-more_itertools.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+78383 INFO: Processing pre-safe-import-module hook 'hook-jaraco.text.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+78384 INFO: Setuptools: 'jaraco.text' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.jaraco.text'!
+78402 INFO: Processing standard module hook 'hook-setuptools._vendor.jaraco.text.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+78404 INFO: Processing pre-safe-import-module hook 'hook-importlib_resources.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+78406 INFO: Processing standard module hook 'hook-importlib_resources.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+78462 INFO: Processing pre-safe-import-module hook 'hook-zipp.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+78497 INFO: Processing pre-safe-import-module hook 'hook-jaraco.context.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+78511 INFO: Processing pre-safe-import-module hook 'hook-backports.tarfile.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+78512 INFO: Setuptools: 'backports.tarfile' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.backports.tarfile'!
+78660 INFO: Processing standard module hook 'hook-backports.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+78784 INFO: Processing pre-safe-import-module hook 'hook-importlib_metadata.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+78826 INFO: Processing standard module hook 'hook-importlib_metadata.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+79196 INFO: Processing pre-safe-import-module hook 'hook-tomli.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+79196 INFO: Setuptools: 'tomli' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.tomli'!
+79978 INFO: Processing standard module hook 'hook-pkg_resources.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+82758 INFO: Processing pre-safe-import-module hook 'hook-platformdirs.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+82784 INFO: Processing standard module hook 'hook-platformdirs.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+83302 INFO: Processing pre-safe-import-module hook 'hook-wheel.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+84754 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+85676 INFO: Processing standard module hook 'hook-jinja2.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+86792 INFO: Processing standard module hook 'hook-matplotlib.backends.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+86958 INFO: Processing standard module hook 'hook-matplotlib.pyplot.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+89269 INFO: Processing pre-safe-import-module hook 'hook-six.moves.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+93724 INFO: Processing standard module hook 'hook-certifi.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+93858 INFO: Processing standard module hook 'hook-pygments.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+102727 INFO: Processing standard module hook 'hook-wcwidth.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+105254 INFO: Processing standard module hook 'hook-jedi.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+110286 INFO: Processing standard module hook 'hook-parso.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+114501 INFO: Processing standard module hook 'hook-sqlite3.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+116554 INFO: Processing standard module hook 'hook-nbformat.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+117053 INFO: Processing standard module hook 'hook-jsonschema.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+120614 INFO: Processing standard module hook 'hook-jsonschema_specifications.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+121566 INFO: Processing standard module hook 'hook-charset_normalizer.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+121956 INFO: Processing standard module hook 'hook-cryptography.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+126168 INFO: hook-cryptography: cryptography does not seem to be using dynamically linked OpenSSL.
+126760 INFO: Processing standard module hook 'hook-bcrypt.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+128095 INFO: Processing standard module hook 'hook-zmq.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+130986 INFO: Processing pre-find-module-path hook 'hook-tkinter.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+130987 INFO: TclTkInfo: initializing cached Tcl/Tk info...
+131643 INFO: Processing standard module hook 'hook-_tkinter.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+131694 INFO: Processing standard module hook 'hook-PyQt6.py' from 'C:\\Users\\HOPE\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\PyInstaller\\hooks'
+Aborting build process due to attempt to collect multiple Qt bindings packages: attempting to run hook for 'PyQt6', while hook for 'PyQt5' has already been run! PyInstaller does not support multiple Qt bindings packages in a frozen application - either ensure that the build environment has only one Qt bindings package installed, or exclude the extraneous bindings packages via the module exclusion mechanism (--exclude command-line option, or excludes list in the spec file).

@@ -49,8 +49,10 @@ class RAMLimiterGUI(QWidget):
             "discord": QCheckBox("Discord"),
             "chrome": QCheckBox("Chrome"),
             "obs64": QCheckBox("OBS"),
-            "Code": QCheckBox("Visual Studio Code")
+            "Code": QCheckBox("Visual Studio Code"),
+            "msedge": QCheckBox("Microsoft Edge") 
         }
+
         for checkbox in self.process_checkboxes.values():
             process_layout.addWidget(checkbox)
         self.custom_process = QLineEdit()
