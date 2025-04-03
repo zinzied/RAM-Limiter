@@ -7,6 +7,7 @@ import argparse
 import threading
 import ctypes
 import logging
+import gc
 from ctypes import wintypes
 
 # Windows API constants
@@ -83,14 +84,21 @@ def limit_ram_for_process(name, interval, max_memory_percent=75):
             # Open process with all access
             handle = OpenProcess(PROCESS_ALL_ACCESS, False, pid)
             if handle:
-                # Set working set size
                 try:
-                    SetProcessWorkingSetSize(handle, -1, -1)  # First, empty the working set
-                    time.sleep(0.1)  # Give a short time for the change to take effect
-                    SetProcessWorkingSetSize(handle, 0, max_memory)  # Then set the new limit
+                    # Empty working set
+                    SetProcessWorkingSetSize(handle, -1, -1)
+                    time.sleep(0.1)
+
+                    # Set new working set size
+                    SetProcessWorkingSetSize(handle, 0, max_memory)
+
+                    # Trim working set
+                    ctypes.windll.psapi.EmptyWorkingSet(handle)
                 finally:
                     CloseHandle(handle)
 
+            # Force garbage collection
+            gc.collect()
             # Get current memory usage
             mem = process.memory_info()
             ram_usage = (mem.rss / total_ram) * 100
@@ -108,18 +116,23 @@ def limit_ram_for_process(name, interval, max_memory_percent=75):
             # If the process is using more than the limit, try to reduce it more aggressively
             if ram_usage > max_memory_percent:
                 print(f"Attempting to reduce {name} memory usage more aggressively...")
-                handle = OpenProcess(PROCESS_ALL_ACCESS, False, pid)
                 if handle:
                     try:
                         SetProcessWorkingSetSize(handle, 0, max_memory // 2)  # Set to half of max_memory
+                        ctypes.windll.psapi.EmptyWorkingSet(handle)
                     finally:
                         CloseHandle(handle)
+
+                # Try to free up memory by calling the garbage collector multiple times
+                for _ in range(3):
+                    gc.collect()
         except Exception as ex:
             error_message = f"Error limiting RAM for {name}: {str(ex)}"
             print(error_message)
             logging.error(error_message)
 
         time.sleep(interval)
+
 def print_system_memory():
     mem = psutil.virtual_memory()
     print(f"\nSystem Memory: {mem.percent}% used | {mem.used / (1024 * 1024):.2f} MB used | {mem.available / (1024 * 1024):.2f} MB available")
