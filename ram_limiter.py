@@ -8,10 +8,20 @@ import threading
 import logging
 import gc
 from ctypes import wintypes
+from colorama import init, Fore, Back, Style
 
+# Initialize colorama
+init(autoreset=True)
 # Windows API constants
 PROCESS_ALL_ACCESS = 0x1F0FFF
 
+# Add a dictionary to store colors for different processes
+PROCESS_COLORS = {
+    "chrome": Fore.YELLOW,
+    "discord": Fore.MAGENTA,
+    "obs64": Fore.CYAN,
+    "Code": Fore.BLUE,
+}
 # Windows API functions
 kernel32 = ctypes.windll.kernel32
 GlobalMemoryStatusEx = kernel32.GlobalMemoryStatusEx
@@ -42,6 +52,7 @@ def get_process_id_by_name(name):
 def limit_ram_for_process(name, interval, max_memory_percent=75):
     print(f"Limiting RAM usage for {name}...")
     logging.info(f"Started monitoring {name}")
+    process_color = PROCESS_COLORS.get(name.lower(), Fore.WHITE)
     while True:
         pid = get_process_id_by_name(name)
         if pid is None:
@@ -84,17 +95,17 @@ def limit_ram_for_process(name, interval, max_memory_percent=75):
             working_set = (mem.wset / total_ram) * 100
             private_usage = (mem.private / total_ram) * 100
 
-            log_message = (f"{name.upper()}: "
+            log_message = (f"{process_color}{name.upper()}: "
                            f"RAM usage (RSS): {ram_usage:.2f}% | {mem.rss / (1024 * 1024):.2f} MB, "
                            f"Working Set: {working_set:.2f}% | {mem.wset / (1024 * 1024):.2f} MB, "
                            f"Private Usage: {private_usage:.2f}% | {mem.private / (1024 * 1024):.2f} MB "
-                           f"(Limited to {max_memory_percent}%)")
+                           f"(Limited to {max_memory_percent}%){Style.RESET_ALL}")
             print(log_message)
             logging.info(log_message)
 
             # If the process is using more than the limit, try to reduce it more aggressively
             if ram_usage > max_memory_percent:
-                print(f"Attempting to reduce {name} memory usage more aggressively...")
+                print(f"{Fore.RED}Attempting to reduce {name} memory usage more aggressively...{Style.RESET_ALL}")
                 if handle:
                     try:
                         SetProcessWorkingSetSize(handle, 0, max_memory // 2)  # Set to half of max_memory
@@ -106,7 +117,7 @@ def limit_ram_for_process(name, interval, max_memory_percent=75):
                 for _ in range(3):
                     gc.collect()
         except Exception as ex:
-            error_message = f"Error limiting RAM for {name}: {str(ex)}"
+            error_message = f"{Fore.RED}Error limiting RAM for {name}: {str(ex)}{Style.RESET_ALL}"
             print(error_message)
             logging.error(error_message)
 
@@ -114,7 +125,7 @@ def limit_ram_for_process(name, interval, max_memory_percent=75):
 
 def print_system_memory():
     mem = psutil.virtual_memory()
-    print(f"\nSystem Memory: {mem.percent}% used | {mem.used / (1024 * 1024):.2f} MB used | {mem.available / (1024 * 1024):.2f} MB available")
+    print(f"\n{Fore.GREEN}System Memory: {mem.percent}% used | {mem.used / (1024 * 1024):.2f} MB used | {mem.available / (1024 * 1024):.2f} MB available{Style.RESET_ALL}")
 
 def custom_ram_limiter(process_names, interval, max_memory_percent):
     for name in process_names:
@@ -129,7 +140,7 @@ def custom_ram_limiter(process_names, interval, max_memory_percent):
 
 def interactive_menu():
     while True:
-        print("\nRAM Limiter Menu:")
+        print(f"\n{Fore.CYAN}RAM Limiter Menu:{Style.RESET_ALL}")
         print("1. Limit Discord")
         print("2. Limit Chrome")
         print("3. Limit OBS")
@@ -138,7 +149,7 @@ def interactive_menu():
         print("6. Limit Custom Process")
         print("0. Exit")
 
-        choice = input("Enter your choice (0-6): ")
+        choice = input(f"{Fore.YELLOW}Enter your choice (0-6): {Style.RESET_ALL}")
 
         if choice == '0':
             print("Exiting RAM Limiter...")
@@ -164,8 +175,47 @@ def interactive_menu():
             return processes, interval, max_memory_percent
         else:
             print("Invalid choice. Please try again.")
+def print_animated_welcome():
+    welcome_message = """
+        ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
+        ██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝
+        ██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗  
+        ██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝  
+        ╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗
+        ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
+                                                                    
+        ████████╗ ██████╗     ██████╗  █████╗ ███╗   ███╗             
+        ╚══██╔══╝██╔═══██╗    ██╔══██╗██╔══██╗████╗ ████║             
+           ██║   ██║   ██║    ██████╔╝███████║██╔████╔██║             
+           ██║   ██║   ██║    ██╔══██╗██╔══██║██║╚██╔╝██║             
+           ██║   ╚██████╔╝    ██║  ██║██║  ██║██║ ╚═╝ ██║             
+           ╚═╝    ╚═════╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝             
+                                                                    
+        ██╗     ██╗███╗   ███╗██╗████████╗███████╗██████╗             
+        ██║     ██║████╗ ████║██║╚══██╔══╝██╔════╝██╔══██╗            
+        ██║     ██║██╔████╔██║██║   ██║   █████╗  ██████╔╝            
+        ██║     ██║██║╚██╔╝██║██║   ██║   ██╔══╝  ██╔══██╗            
+        ███████╗██║██║ ╚═╝ ██║██║   ██║   ███████╗██║  ██║            
+        ╚══════╝╚═╝╚═╝     ╚═╝╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝            
+    """
+    description = "Optimize your system's memory usage for better performance!"
+    colors = [Fore.RED, Fore.YELLOW, Fore.GREEN, Fore.CYAN, Fore.BLUE, Fore.MAGENTA]
+
+    # Print the ASCII art welcome message
+    for i, char in enumerate(welcome_message):
+        color = colors[i % len(colors)]
+        sys.stdout.write(f"{color}{char}{Style.RESET_ALL}")
+        sys.stdout.flush()
+        time.sleep(0.001)  # Faster animation for the large text
+
+    # Print the description
+    print(f"\n{Fore.WHITE}{Style.BRIGHT}{description}{Style.RESET_ALL}")
+
+    # Add some space after the welcome message
+    print("\n" + "=" * 70 + "\n")
 
 def main():
+    print_animated_welcome()  # Add this line
     setup_logging()
 
     parser = argparse.ArgumentParser(description="RAM Limiter CLI")
@@ -204,6 +254,7 @@ def main():
         sys.exit(1)
 
     custom_ram_limiter(processes_to_monitor, interval, max_memory_percent)
+
 
 def memory_hog():
     # Allocate a large list to consume memory
