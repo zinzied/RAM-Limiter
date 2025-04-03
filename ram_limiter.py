@@ -5,7 +5,6 @@ import psutil
 import ctypes
 import argparse
 import threading
-import ctypes
 import logging
 import gc
 from ctypes import wintypes
@@ -23,26 +22,6 @@ CloseHandle = kernel32.CloseHandle
 def setup_logging():
     logging.basicConfig(filename='ram_limiter.log', level=logging.INFO,
                         format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-
-def is_admin():
-    try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
-        return False
-
-def elevate_privileges():
-    if not is_admin():
-        print("RAM Limiter requires admin privileges.")
-        print("Would you like to restart the script with admin privileges? (y/n)")
-        choice = input().lower()
-        if choice == 'y':
-            args = [sys.executable] + sys.argv + ['--interactive']
-            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(args), None, 1)
-            sys.exit(0)
-        else:
-            print("The script will continue without admin privileges, but functionality may be limited.")
-            print("Press Enter to continue...")
-            input()
 
 def get_process_id_by_name(name):
     pids = []
@@ -137,7 +116,6 @@ def print_system_memory():
     mem = psutil.virtual_memory()
     print(f"\nSystem Memory: {mem.percent}% used | {mem.used / (1024 * 1024):.2f} MB used | {mem.available / (1024 * 1024):.2f} MB available")
 
-
 def custom_ram_limiter(process_names, interval, max_memory_percent):
     for name in process_names:
         threading.Thread(target=limit_ram_for_process, args=(name, interval, max_memory_percent), daemon=True).start()
@@ -188,7 +166,6 @@ def interactive_menu():
             print("Invalid choice. Please try again.")
 
 def main():
-    elevate_privileges()
     setup_logging()
 
     parser = argparse.ArgumentParser(description="RAM Limiter CLI")
