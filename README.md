@@ -97,28 +97,28 @@ python ram_limiter.py --custom firefox spotify --interval 10
 ## Inspiration
 [This Tool](https://github.com/farajyeet/discord-ram-limiter) is no longer maintained. It was found to consume more CPU resources than Discord itself, resulting in a trade-off between free CPU and free RAM. This not only led to increased power usage but also negated the purpose of freeing up RAM.
 
-Our version of the RAM Limiter improves upon the original by focusing on efficient memory management without overutilising the CPU. Some parts of the code were reused from the original repository and [our other project](https://github.com/0vm/Pinger).
+Our version of the RAM Limiter improves upon the original by focusing on efficient memory management without overutilising the CPU. Some parts of the code were reused from the original repository and [0vm](https://github.com/0vm).
 
 
 ## Tags
 
-Limit RAM usage in Discord, 
-Limit RAM usage in Google Chrome, 
-Reduce RAM consumption in Google Chrome, 
-High RAM usage in Google Chrome, 
-Discord RAM management, 
-Reduce Discord's memory usage, 
-Discord RAM optimization, 
-Discord RAM optimisation, 
-Memory leak in Discord, 
-High RAM usage in Discord, 
-OBS RAM management, 
-Reduce OBS memory usage, 
-OBS RAM optimization, 
-OBS RAM optimisation, 
-OBS memory leak troubleshooting, 
-High RAM usage in OBS, 
-Limit OBS RAM usage,
-VS Code RAM management,
-Multi-process RAM limiter,
-Windows memory optimization tool
+- Limit RAM usage in Discord, 
+- Limit RAM usage in Google Chrome, 
+- Reduce RAM consumption in Google Chrome, 
+- High RAM usage in Google Chrome, 
+- Discord RAM management, 
+- Reduce Discord's memory usage, 
+- Discord RAM optimization, 
+- Discord RAM optimisation, 
+- Memory leak in Discord, 
+- High RAM usage in Discord, 
+- OBS RAM management, 
+- Reduce OBS memory usage, 
+- OBS RAM optimization, 
+- OBS RAM optimisation, 
+- OBS memory leak troubleshooting, 
+- High RAM usage in OBS, 
+- Limit OBS RAM usage,
+- VS Code RAM management,
+- Multi-process RAM limiter,
+- Windows memory optimization tool
