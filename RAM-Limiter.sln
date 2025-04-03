@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RamLimiter", "RamLimiter.csproj", "{7AD1A5D2-5CF7-CA83-F7F8-C7B8B9CB6CD4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7AD1A5D2-5CF7-CA83-F7F8-C7B8B9CB6CD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AD1A5D2-5CF7-CA83-F7F8-C7B8B9CB6CD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AD1A5D2-5CF7-CA83-F7F8-C7B8B9CB6CD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AD1A5D2-5CF7-CA83-F7F8-C7B8B9CB6CD4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BB528CF7-D209-424A-86CF-C16F106C1E80}
+	EndGlobalSection
+EndGlobal
