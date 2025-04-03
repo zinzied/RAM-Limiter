@@ -28,9 +28,16 @@ def elevate_privileges():
 
 def get_process_id_by_name(name):
     pids = []
+    chrome_names = ["chrome", "chrome.exe", "Google Chrome"]
+    target_names = [name.lower()] if name.lower() != "chrome" else [n.lower() for n in chrome_names]
+    
     for proc in psutil.process_iter(['name', 'memory_info']):
-        if proc.info['name'].lower() == name.lower():
-            pids.append((proc.pid, proc.info['memory_info'].rss))
+        try:
+            if any(target_name in proc.info['name'].lower() for target_name in target_names):
+                pids.append((proc.pid, proc.info['memory_info'].rss))
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+
     if pids:
         return max(pids, key=lambda x: x[1])[0]
     return None
@@ -41,6 +48,12 @@ def limit_ram_for_process(name, interval):
         pid = get_process_id_by_name(name)
         if pid is None:
             print(f"{name} process not found. Retrying...")
+            print("Active processes:")
+            for proc in psutil.process_iter(['name']):
+                try:
+                    print(f"  - {proc.info['name']}")
+                except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                    pass
             time.sleep(interval)
             continue
 
@@ -63,7 +76,8 @@ def custom_ram_limiter(process_names, interval):
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
-        print("\nStopping RAM monitoring...")
+        print("\nStopping RAM monitoring...")  
+
 def interactive_menu():
     while True:
         print("\nRAM Limiter Menu:")
