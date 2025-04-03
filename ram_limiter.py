@@ -85,24 +85,45 @@ def limit_ram_for_process(name, interval, max_memory_percent=75):
             if handle:
                 # Set working set size
                 try:
-                    current_min, current_max = process.memory_info().wset, process.memory_info().peak_wset
-                    new_min = max(current_min, int(max_memory * 0.5))  # Set minimum to half of max or current, whichever is larger
-                    SetProcessWorkingSetSize(handle, new_min, max_memory)
+                    SetProcessWorkingSetSize(handle, -1, -1)  # First, empty the working set
+                    time.sleep(0.1)  # Give a short time for the change to take effect
+                    SetProcessWorkingSetSize(handle, 0, max_memory)  # Then set the new limit
                 finally:
                     CloseHandle(handle)
 
             # Get current memory usage
             mem = process.memory_info()
             ram_usage = (mem.rss / total_ram) * 100
-            log_message = f"{name.upper()}: RAM usage: {ram_usage:.2f}% | {mem.rss / (1024 * 1024):.2f} MB (Limited to {max_memory_percent}%)"
+            working_set = (mem.wset / total_ram) * 100
+            private_usage = (mem.private / total_ram) * 100
+
+            log_message = (f"{name.upper()}: "
+                           f"RAM usage (RSS): {ram_usage:.2f}% | {mem.rss / (1024 * 1024):.2f} MB, "
+                           f"Working Set: {working_set:.2f}% | {mem.wset / (1024 * 1024):.2f} MB, "
+                           f"Private Usage: {private_usage:.2f}% | {mem.private / (1024 * 1024):.2f} MB "
+                           f"(Limited to {max_memory_percent}%)")
             print(log_message)
             logging.info(log_message)
+
+            # If the process is using more than the limit, try to reduce it more aggressively
+            if ram_usage > max_memory_percent:
+                print(f"Attempting to reduce {name} memory usage more aggressively...")
+                handle = OpenProcess(PROCESS_ALL_ACCESS, False, pid)
+                if handle:
+                    try:
+                        SetProcessWorkingSetSize(handle, 0, max_memory // 2)  # Set to half of max_memory
+                    finally:
+                        CloseHandle(handle)
         except Exception as ex:
             error_message = f"Error limiting RAM for {name}: {str(ex)}"
             print(error_message)
             logging.error(error_message)
 
         time.sleep(interval)
+def print_system_memory():
+    mem = psutil.virtual_memory()
+    print(f"\nSystem Memory: {mem.percent}% used | {mem.used / (1024 * 1024):.2f} MB used | {mem.available / (1024 * 1024):.2f} MB available")
+
 
 def custom_ram_limiter(process_names, interval, max_memory_percent):
     for name in process_names:
@@ -110,7 +131,8 @@ def custom_ram_limiter(process_names, interval, max_memory_percent):
 
     try:
         while True:
-            time.sleep(1)
+            time.sleep(10)  # Print system memory every 10 seconds
+            print_system_memory()
     except KeyboardInterrupt:
         print("\nStopping RAM limiting...")
 
@@ -201,3 +223,4 @@ def memory_hog():
 
 if __name__ == "__main__":
     main()
+
