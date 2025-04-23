@@ -24,9 +24,10 @@ Old Video, Now you can limit any application and as many applications.
 ![RAM Limiter Demonstration](https://user-images.githubusercontent.com/79897291/173233207-912f3cb1-bc42-45fa-9f81-36da025f58a4.gif)
 https://user-images.githubusercontent.com/79897291/172990167-0e113c2d-5edd-4ffa-9e06-8ac7cb1946ea.mp4
 
-## THIS THE GUI VERSION :
+## THE GUI VERSION :
 
-![image](https://github.com/user-attachments/assets/ff09c064-9fb5-45dc-ac79-fe2f2efec2c2)
+![image](https://github.com/user-attachments/assets/fa5ab459-5bcb-4b77-b870-eeb740138d21)
+
 
 RAM Limiter was developed to address the challenge of applications, like Discord, that tend to cache objects unnecessarily, leading to high RAM usage. It leverages the `GC.Collect` method for efficient garbage collection, thereby freeing up the memory that these applications consume.
 
