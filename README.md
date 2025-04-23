@@ -134,3 +134,8 @@ Our version of the RAM Limiter improves upon [the original tool](https://github.
 ## 🏷️ Keywords
 
 Memory Management | RAM Optimization | System Performance | Resource Monitoring | Windows Utility
+
+### Donations
+If you feel like showing your love and/or appreciation for this Sipmle project, then how about shouting me a coffee or Milk :)
+
+[<img src="https://github.com/zinzied/Website-login-checker/assets/10098794/24f9935f-3637-4607-8980-06124c2d0225">](https://www.buymeacoffee.com/Zied)
