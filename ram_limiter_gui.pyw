@@ -1,12 +1,13 @@
 import sys
 import json
 from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QCheckBox, QLineEdit, 
-                             QLabel, QTextEdit, QGroupBox, QSystemTrayIcon, QMenu, QAction, QFileDialog, QMessageBox, QGridLayout, QProgressBar)
+                             QLabel, QTextEdit, QGroupBox, QSystemTrayIcon, QMenu, QAction, QFileDialog, QMessageBox, QGridLayout, QProgressBar, QInputDialog)
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
 from PyQt5.QtGui import QIcon
 import psutil
 from ram_limiter import limit_ram_for_process, print_system_memory
 import pyqtgraph as pg
+import os
 
 class RAMLimiterThread(QThread):
     update_signal = pyqtSignal(str)
@@ -19,6 +20,31 @@ class RAMLimiterThread(QThread):
 
     def run(self):
         limit_ram_for_process(self.process_name, self.interval, self.max_memory_percent)
+
+class GameModeThread(QThread):
+    update_signal = pyqtSignal(str)
+
+    def __init__(self, ram_limit_mb, whitelist):
+        super().__init__()
+        self.ram_limit_mb = ram_limit_mb
+        self.whitelist = whitelist
+        self.running = True
+
+    def run(self):
+        while self.running:
+            for proc in psutil.process_iter(['name', 'memory_info']):
+                try:
+                    if proc.name().lower() not in self.whitelist:
+                        memory_mb = proc.memory_info().rss / (1024 * 1024)
+                        if memory_mb > self.ram_limit_mb:
+                            proc.kill()
+                            self.update_signal.emit(f"Killed process {proc.name()} using {memory_mb:.2f} MB")
+                except (psutil.NoSuchProcess, psutil.AccessDenied):
+                    continue
+            self.sleep(2)
+
+    def stop(self):
+        self.running = False
 
 class SystemMemoryThread(QThread):
     update_signal = pyqtSignal(str, float)
@@ -241,6 +267,58 @@ class RAMLimiterGUI(QWidget):
         self.tray_icon.setContextMenu(tray_menu)
         self.tray_icon.show()
 
+        # Initialize game mode UI
+        self.init_game_mode()
+
+    def init_game_mode(self):
+        self.game_mode_group = QGroupBox("Game Mode")
+        game_mode_layout = QVBoxLayout()
+        
+        self.game_mode_checkbox = QCheckBox("Enable Game Mode")
+        self.game_mode_checkbox.stateChanged.connect(self.toggle_game_mode)
+        
+        self.game_whitelist = QLineEdit()
+        self.game_whitelist.setPlaceholderText("Whitelist (comma-separated processes)")
+        
+        self.ram_limit_input = QLineEdit()
+        self.ram_limit_input.setPlaceholderText("RAM limit per process (MB)")
+        self.ram_limit_input.setText("500")
+        
+        game_mode_layout.addWidget(self.game_mode_checkbox)
+        game_mode_layout.addWidget(QLabel("RAM Limit (MB):"))
+        game_mode_layout.addWidget(self.ram_limit_input)
+        game_mode_layout.addWidget(QLabel("Whitelist:"))
+        game_mode_layout.addWidget(self.game_whitelist)
+        
+        self.game_mode_group.setLayout(game_mode_layout)
+        self.layout().addWidget(self.game_mode_group)
+        
+        self.game_mode_thread = None
+
+    def toggle_game_mode(self, state):
+        if state:
+            try:
+                ram_limit = int(self.ram_limit_input.text())
+                whitelist = [proc.strip().lower() for proc in self.game_whitelist.text().split(',')]
+                
+                system_processes = ['explorer.exe', 'system', 'systemd', 'svchost.exe', 
+                                    'csrss.exe', 'winlogon.exe', 'services.exe']
+                whitelist.extend(system_processes)
+                
+                self.game_mode_thread = GameModeThread(ram_limit, whitelist)
+                self.game_mode_thread.update_signal.connect(self.update_output)
+                self.game_mode_thread.start()
+                self.output_area.append("Game Mode activated")
+            except ValueError:
+                QMessageBox.warning(self, "Error", "Please enter a valid RAM limit")
+                self.game_mode_checkbox.setChecked(False)
+        else:
+            if self.game_mode_thread:
+                self.game_mode_thread.stop()
+                self.game_mode_thread.wait()
+                self.game_mode_thread = None
+                self.output_area.append("Game Mode deactivated")
+
     def minimize_to_tray(self):
         self.hide()
         self.tray_icon.showMessage("RAM Limiter", "Application minimized to tray", QSystemTrayIcon.Information, 2000)
@@ -290,7 +368,12 @@ class RAMLimiterGUI(QWidget):
             "custom_process": self.custom_process.text(),
             "interval": self.interval_input.text(),
             "max_memory_percent": self.memory_percent_input.text(),
-            "auto_start": self.auto_start_checkbox.isChecked()
+            "auto_start": self.auto_start_checkbox.isChecked(),
+            "game_mode": {
+                "enabled": self.game_mode_checkbox.isChecked(),
+                "ram_limit": self.ram_limit_input.text(),
+                "whitelist": self.game_whitelist.text()
+            }
         }
         filename, _ = QFileDialog.getSaveFileName(self, "Save Configuration", "", "JSON Files (*.json)")
         if filename:
@@ -310,9 +393,16 @@ class RAMLimiterGUI(QWidget):
             self.interval_input.setText(config["interval"])
             self.memory_percent_input.setText(config["max_memory_percent"])
             self.auto_start_checkbox.setChecked(config["auto_start"])
+            if "game_mode" in config:
+                self.game_mode_checkbox.setChecked(config["game_mode"]["enabled"])
+                self.ram_limit_input.setText(config["game_mode"]["ram_limit"])
+                self.game_whitelist.setText(config["game_mode"]["whitelist"])
             self.output_area.append(f"Configuration loaded from {filename}")
 
     def closeEvent(self, event):
+        if self.game_mode_thread:
+            self.game_mode_thread.stop()
+            self.game_mode_thread.wait()
         if self.tray_icon.isVisible():
             reply = QMessageBox.question(self, 'Minimize', 'Do you want to minimize to tray?',
                                          QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
