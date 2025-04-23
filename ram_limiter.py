@@ -29,6 +29,38 @@ SetProcessWorkingSetSize = kernel32.SetProcessWorkingSetSize
 OpenProcess = kernel32.OpenProcess
 CloseHandle = kernel32.CloseHandle
 
+# Add this new class after the existing imports
+class GameMode:
+    def __init__(self, ram_limit_mb=500, whitelist=None):
+        self.ram_limit_mb = ram_limit_mb
+        self.whitelist = whitelist or ['explorer.exe', 'system', 'systemd', 
+                                     'svchost.exe', 'csrss.exe', 'winlogon.exe', 
+                                     'services.exe']
+        self.running = True
+
+    def start(self):
+        print(f"{Fore.GREEN}Game Mode activated. RAM limit: {self.ram_limit_mb}MB{Style.RESET_ALL}")
+        print(f"{Fore.CYAN}Whitelisted processes: {', '.join(self.whitelist)}{Style.RESET_ALL}")
+        while self.running:
+            try:
+                for proc in psutil.process_iter(['name', 'memory_info']):
+                    try:
+                        if proc.name().lower() not in self.whitelist:
+                            memory_mb = proc.memory_info().rss / (1024 * 1024)
+                            if memory_mb > self.ram_limit_mb:
+                                proc.kill()
+                                print(f"{Fore.RED}Terminated {proc.name()} using {memory_mb:.2f}MB{Style.RESET_ALL}")
+                                logging.info(f"Game Mode terminated {proc.name()} using {memory_mb:.2f}MB")
+                    except (psutil.NoSuchProcess, psutil.AccessDenied):
+                        continue
+                time.sleep(2)
+            except KeyboardInterrupt:
+                self.stop()
+
+    def stop(self):
+        self.running = False
+        print(f"{Fore.YELLOW}Game Mode deactivated{Style.RESET_ALL}")
+
 def setup_logging():
     logging.basicConfig(filename='ram_limiter.log', level=logging.INFO,
                         format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
@@ -147,13 +179,21 @@ def interactive_menu():
         print("4. Limit Visual Studio Code")
         print("5. Limit Discord & Chrome")
         print("6. Limit Custom Process")
+        print("7. Enable Game Mode")
         print("0. Exit")
 
-        choice = input(f"{Fore.GREEN}Enter your choice (0-6): {Style.RESET_ALL}")
+        choice = input(f"{Fore.GREEN}Enter your choice (0-7): {Style.RESET_ALL}")
 
         if choice == '0':
             print("Exiting RAM Limiter...")
             sys.exit(0)
+        elif choice == '7':
+            ram_limit = int(input("Enter RAM limit per process in MB (default 500): ") or "500")
+            whitelist = input("Enter whitelisted processes (comma-separated, leave empty for defaults): ")
+            whitelist = [p.strip().lower() for p in whitelist.split(',')] if whitelist else None
+            game_mode = GameMode(ram_limit_mb=ram_limit, whitelist=whitelist)
+            game_mode.start()
+            return [], 0, 0  # Return empty values as game mode handles everything
         elif choice in ['1', '2', '3', '4', '5', '6']:
             interval = int(input("Enter monitoring interval in seconds (default 5): ") or "5")
             max_memory_percent = int(input("Enter maximum memory percentage (default 75): ") or "75")
@@ -175,6 +215,7 @@ def interactive_menu():
             return processes, interval, max_memory_percent
         else:
             print("Invalid choice. Please try again.")
+
 def print_animated_welcome():
     welcome_message = """
                 ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
@@ -189,7 +230,7 @@ def print_animated_welcome():
                    ██║   ██║   ██║    ██████╔╝███████║██╔████╔██║             
                    ██║   ██║   ██║    ██╔══██╗██╔══██║██║╚██╔╝██║             
                    ██║   ╚██████╔╝    ██║  ██║██║  ██║██║ ╚═╝ ██║             
-                   ╚═╝    ╚═════╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝             
+                   ╚═╝    ╚═════╝     ╚═╝  ╚═╝╚═╝  ██║██║ ╚═╝ ██║             
                                                                             
                 ██╗     ██╗███╗   ███╗██╗████████╗███████╗██████╗             
                 ██║     ██║████╗ ████║██║╚══██╔══╝██╔════╝██╔══██╗            
@@ -215,7 +256,7 @@ def print_animated_welcome():
     print("\n" + "=" * 70 + "\n")
 
 def main():
-    print_animated_welcome()  # Add this line
+    print_animated_welcome()
     setup_logging()
 
     parser = argparse.ArgumentParser(description="RAM Limiter CLI")
@@ -227,7 +268,16 @@ def main():
     parser.add_argument("--interval", type=int, default=5, help="Monitoring interval in seconds (default: 5)")
     parser.add_argument("--interactive", action="store_true", help="Use interactive menu")
     parser.add_argument("--test", action="store_true", help="Run a memory-hogging test")
+    parser.add_argument("--game-mode", action="store_true", help="Enable Game Mode")
+    parser.add_argument("--ram-limit", type=int, default=500, help="RAM limit per process in MB for Game Mode")
+    parser.add_argument("--whitelist", type=str, help="Comma-separated list of processes to whitelist in Game Mode")
     args = parser.parse_args()
+
+    if args.game_mode:
+        whitelist = [p.strip().lower() for p in args.whitelist.split(',')] if args.whitelist else None
+        game_mode = GameMode(ram_limit_mb=args.ram_limit, whitelist=whitelist)
+        game_mode.start()
+        return
 
     if args.test:
         print("Running memory hog test...")

@@ -13,6 +13,39 @@
 - 💾 Save/load configuration profiles (GUI)
 - 📝 Automatic activity logging
 - 🛡️ Requires admin privileges for optimal operation
+- 🎮 Game Mode:
+  - Automatically terminates non-essential processes that exceed RAM limits
+  - Configurable RAM limit per process
+  - Customizable process whitelist to protect critical applications
+  - System processes are automatically protected
+  - One-click activation/deactivation
+
+## 🎮 Game Mode
+
+Game Mode provides advanced memory optimization for gaming sessions by:
+
+1. 🛡️ **Process Protection**: 
+   - Whitelist critical processes you want to keep running
+   - System processes are automatically protected
+   - Comma-separated list for multiple processes
+
+2. 📊 **RAM Management**:
+   - Set maximum RAM limit per process (in MB)
+   - Processes exceeding the limit are automatically terminated
+   - Real-time monitoring and automatic intervention
+
+3. ⚡ **Quick Controls**:
+   - Enable/disable with a single click
+   - Instant activation/deactivation
+   - Status displayed in the output area
+
+To use Game Mode:
+1. Enter RAM limit (default: 500 MB)
+2. Add processes to whitelist (comma-separated)
+3. Click "Enable Game Mode" checkbox
+4. Game Mode will automatically terminate non-whitelisted processes that exceed the RAM limit
+
+> **Note:** Use Game Mode carefully as it terminates processes. Always whitelist important applications.
 
 ## 📖 Overview
 
