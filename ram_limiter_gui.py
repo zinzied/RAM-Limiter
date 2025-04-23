@@ -1,8 +1,7 @@
 import sys
 import json
 from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QCheckBox, QLineEdit, 
-                             QLabel, QTextEdit, QGroupBox, QSystemTrayIcon, QMenu, QAction, QFileDialog, QMessageBox)
-from PyQt5.QtWidgets import QSystemTrayIcon
+                             QLabel, QTextEdit, QGroupBox, QSystemTrayIcon, QMenu, QAction, QFileDialog, QMessageBox, QGridLayout, QProgressBar)
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
 from PyQt5.QtGui import QIcon
 import psutil
@@ -37,14 +36,67 @@ class RAMLimiterGUI(QWidget):
     def __init__(self):
         super().__init__()
         self.limiter_threads = {}
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #2b2b2b;
+                color: #ffffff;
+                font-family: 'Segoe UI';
+            }
+            QGroupBox {
+                border: 2px solid #3c3c3c;
+                border-radius: 5px;
+                margin-top: 1ex;
+                padding-top: 12px;
+            }
+            QGroupBox::title {
+                subcontrol-origin: margin;
+                left: 10px;
+                padding: 0 3px;
+                color: #00b4d8;
+            }
+            QPushButton {
+                background-color: #3c3c3c;
+                border: 1px solid #4a4a4a;
+                border-radius: 4px;
+                padding: 8px;
+                min-width: 80px;
+            }
+            QPushButton:hover {
+                background-color: #4a4a4a;
+            }
+            QPushButton:pressed {
+                background-color: #5a5a5a;
+            }
+            QCheckBox {
+                spacing: 5px;
+            }
+            QCheckBox::indicator {
+                width: 16px;
+                height: 16px;
+            }
+            QLineEdit {
+                background-color: #353535;
+                border: 1px solid #4a4a4a;
+                border-radius: 4px;
+                padding: 5px;
+            }
+            QTextEdit {
+                background-color: #353535;
+                border: 1px solid #4a4a4a;
+                border-radius: 4px;
+                padding: 5px;
+            }
+        """)
         self.initUI()
 
     def initUI(self):
         layout = QVBoxLayout()
+        layout.setContentsMargins(15, 15, 15, 15)
+        layout.setSpacing(15)
 
-        # Process selection
-        self.process_group = QGroupBox("Select Processes")
-        process_layout = QVBoxLayout()
+        # Process selection with grid layout
+        self.process_group = QGroupBox("Process Selection")
+        process_layout = QGridLayout()
         self.process_checkboxes = {
             "discord": QCheckBox("Discord"),
             "chrome": QCheckBox("Chrome"),
@@ -52,39 +104,71 @@ class RAMLimiterGUI(QWidget):
             "Code": QCheckBox("Visual Studio Code"),
             "msedge": QCheckBox("Microsoft Edge") 
         }
-
-        for checkbox in self.process_checkboxes.values():
-            process_layout.addWidget(checkbox)
+        checkboxes = list(self.process_checkboxes.values())
+        for i, checkbox in enumerate(checkboxes):
+            row = i // 2
+            col = i % 2
+            process_layout.addWidget(checkbox, row, col)
+        
+        # Custom process input with icon
+        custom_layout = QHBoxLayout()
         self.custom_process = QLineEdit()
-        self.custom_process.setPlaceholderText("Enter custom process name")
-        process_layout.addWidget(self.custom_process)
+        self.custom_process.setPlaceholderText("Enter custom process name...")
+        custom_layout.addWidget(self.custom_process)
         self.process_group.setLayout(process_layout)
         layout.addWidget(self.process_group)
 
-        # Minimize to tray button
-        self.minimize_button = QPushButton("Minimize to Tray")
+        # Styled buttons
+        self.minimize_button = QPushButton("🎯 Minimize to Tray")
+        self.minimize_button.setStyleSheet("""
+            QPushButton {
+                background-color: #2ecc71;
+                color: white;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #27ae60;
+            }
+        """)
         self.minimize_button.clicked.connect(self.minimize_to_tray)
         layout.addWidget(self.minimize_button)
 
-        # Interval and memory percentage inputs
-        input_layout = QHBoxLayout()
-        self.interval_input = QLineEdit()
-        self.interval_input.setPlaceholderText("Interval (seconds)")
-        self.memory_percent_input = QLineEdit()
-        self.memory_percent_input.setPlaceholderText("Max memory %")
-        input_layout.addWidget(self.interval_input)
-        input_layout.addWidget(self.memory_percent_input)
-        layout.addLayout(input_layout)
-
-        # Start and Stop buttons
-        button_layout = QHBoxLayout()
-        self.start_button = QPushButton("Start")
-        self.stop_button = QPushButton("Stop")
+        # Gradient buttons for start/stop
+        self.start_button = QPushButton("🚀 Start Monitoring")
+        self.stop_button = QPushButton("🛑 Stop All")
+        for btn in [self.start_button, self.stop_button]:
+            btn.setStyleSheet("""
+                QPushButton {
+                    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                        stop:0 #3498db, stop:1 #2980b9);
+                    color: white;
+                    font-weight: bold;
+                    border-radius: 5px;
+                    padding: 10px;
+                }
+                QPushButton:hover {
+                    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                        stop:0 #2980b9, stop:1 #3498db);
+                }
+            """)
         self.start_button.clicked.connect(self.start_limiting)
         self.stop_button.clicked.connect(self.stop_limiting)
+        button_layout = QHBoxLayout()
         button_layout.addWidget(self.start_button)
         button_layout.addWidget(self.stop_button)
         layout.addLayout(button_layout)
+
+        # Input fields with labels
+        input_layout = QHBoxLayout()
+        self.interval_input = QLineEdit()
+        self.memory_percent_input = QLineEdit()
+        for widget, label in [(self.interval_input, "Interval (s):"), 
+                            (self.memory_percent_input, "Max Memory (%):")]:
+            container = QHBoxLayout()
+            container.addWidget(QLabel(label))
+            container.addWidget(widget)
+            input_layout.addLayout(container)
+        layout.addLayout(input_layout)
 
         # Save and Load configuration buttons
         config_layout = QHBoxLayout()
@@ -99,6 +183,7 @@ class RAMLimiterGUI(QWidget):
         # Auto-start checkbox
         self.auto_start_checkbox = QCheckBox("Auto-start on application launch")
         layout.addWidget(self.auto_start_checkbox)
+
         # Output area
         self.output_area = QTextEdit()
         self.output_area.setReadOnly(True)
@@ -118,6 +203,22 @@ class RAMLimiterGUI(QWidget):
         self.curve = self.graph_widget.plot(pen='b')
         self.data = []
         layout.addWidget(self.graph_widget)
+
+        # Add animated progress bar for memory usage
+        self.memory_progress = QProgressBar()
+        self.memory_progress.setStyleSheet("""
+            QProgressBar {
+                border: 2px solid #3c3c3c;
+                border-radius: 5px;
+                text-align: center;
+            }
+            QProgressBar::chunk {
+                background-color: #00b4d8;
+                width: 10px;
+            }
+        """)
+        layout.addWidget(self.memory_progress)
+
         self.setLayout(layout)
         self.setWindowTitle('RAM Limiter')
         self.show()
@@ -127,7 +228,6 @@ class RAMLimiterGUI(QWidget):
         self.system_memory_thread.update_signal.connect(self.update_system_memory)
         self.system_memory_thread.start()
 
-        # System tray icon
         # System tray icon
         self.tray_icon = QSystemTrayIcon(self)
         self.tray_icon.setIcon(QIcon('ram.ico'))
@@ -164,6 +264,7 @@ class RAMLimiterGUI(QWidget):
             thread.start()
             self.limiter_threads[process_name] = thread
             self.output_area.append(f"Started limiting RAM for {process_name}")
+
     def stop_limiting(self):
         for thread in self.limiter_threads.values():
             if thread.isRunning():
@@ -181,6 +282,7 @@ class RAMLimiterGUI(QWidget):
         if len(self.data) > 100:  # Keep only last 100 points
             self.data = self.data[-100:]
         self.curve.setData(self.data)
+        self.memory_progress.setValue(int(usage))
 
     def save_configuration(self):
         config = {
@@ -229,6 +331,7 @@ class RAMLimiterGUI(QWidget):
         else:
             self.stop_limiting()
             event.accept()
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = RAMLimiterGUI()
