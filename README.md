@@ -1,39 +1,26 @@
 # RAM Limiter
 
-A Python utility designed to optimize RAM usage of applications through Windows memory management APIs.
+**RAM Limiter** is a Windows utility with both GUI and CLI, designed to monitor and limit the RAM usage of selected applications. It helps prevent memory-hungry apps (like Discord, Chrome, OBS, and more) from consuming excessive system resources, improving overall system performance—especially on PCs with limited RAM.
 
-## Features
+## Key Features
 
-- Monitor and limit RAM usage for multiple applications simultaneously
-- Interactive menu interface and command-line options
-- Support for popular applications:
-  - Discord
-  - Google Chrome
-  - OBS Studio
-  - Visual Studio Code
-  - Custom processes
-- Real-time memory usage statistics
-- Configurable monitoring intervals
-- Adjustable memory limits per process
-- Automatic logging of memory usage
-- Admin privilege elevation when needed
+- Limit RAM usage for multiple applications at once
+- Easy-to-use graphical interface and command-line options
+- Built-in support for popular apps (Discord, Chrome, OBS Studio, Visual Studio Code) and any custom process
+- Real-time memory usage statistics and visualizations
+- Configurable monitoring intervals and memory limits per process
+- System tray integration for background operation (GUI)
+- Save/load configuration profiles (GUI)
+- Automatic activity logging
+- Requires admin privileges for optimal operation
 
 ## Overview
-Old Video, Now you can limit any application and as many applications.
+
+RAM Limiter addresses the problem of applications caching excessive data and not releasing memory, which can slow down your system. By leveraging Windows memory management APIs and Python's garbage collection, RAM Limiter can free up unused memory, making more RAM available for games and other demanding applications.
 
 ![RAM Limiter Demonstration](https://user-images.githubusercontent.com/79897291/173233207-912f3cb1-bc42-45fa-9f81-36da025f58a4.gif)
-https://user-images.githubusercontent.com/79897291/172990167-0e113c2d-5edd-4ffa-9e06-8ac7cb1946ea.mp4
 
-## THE GUI VERSION :
-
-![image](https://github.com/user-attachments/assets/fa5ab459-5bcb-4b77-b870-eeb740138d21)
-
-
-RAM Limiter was developed to address the challenge of applications, like Discord, that tend to cache objects unnecessarily, leading to high RAM usage. It leverages the `GC.Collect` method for efficient garbage collection, thereby freeing up the memory that these applications consume.
-
-This tool proves particularly useful for systems with limited RAM, where applications like Discord could use up to 1.3GB. By releasing these resources, it allows RAM-intensive games and other applications to run more smoothly.
-
-The RAM Limiter is a standalone solution that eliminates the need for other software like Razer Cortex™. Moreover, it provides an updated and maintained alternative to the original version of this tool, which is no longer supported and has been outdated for over a year.
+> **Note:** The GUI version offers a modern, user-friendly experience with advanced features like memory usage graphs and configuration management.
 
 ## Usage
 
@@ -102,7 +89,6 @@ python ram_limiter.py --custom firefox spotify --interval 10
 [This Tool](https://github.com/farajyeet/discord-ram-limiter) is no longer maintained. It was found to consume more CPU resources than Discord itself, resulting in a trade-off between free CPU and free RAM. This not only led to increased power usage but also negated the purpose of freeing up RAM.
 
 Our version of the RAM Limiter improves upon the original by focusing on efficient memory management without overutilising the CPU. Some parts of the code were reused from the original repository and [0vm](https://github.com/0vm).
-
 
 ## Tags
 
