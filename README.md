@@ -57,6 +57,43 @@ RAM Limiter addresses the problem of applications caching excessive data and not
 
 ## 🎮 Usage
 
+### ⌨️ Command Line Options
+
+```sh
+python ram_limiter.py [options]
+
+Options:
+  --discord         🎮 Limit Discord RAM usage
+  --chrome         🌐 Limit Chrome RAM usage
+  --obs            🎥 Limit OBS RAM usage
+  --vscode         💻 Limit Visual Studio Code RAM usage
+  --custom         ✨ Limit RAM usage for custom processes
+  --interval N     ⏱️ Monitoring interval in seconds (default: 5)
+  --interactive    🖱️ Use interactive menu
+  --test           🧪 Run a memory-hogging test
+  --game-mode      🎮 Enable Game Mode
+  --ram-limit N    📊 Set RAM limit per process in MB (default: 500)
+  --whitelist      🛡️ Comma-separated list of processes to whitelist
+```
+
+### 🎮 Game Mode via CLI
+
+You can activate Game Mode through command line with various options:
+
+```sh
+# Basic Game Mode with default settings
+python ram_limiter.py --game-mode
+
+# Game Mode with custom RAM limit (750 MB)
+python ram_limiter.py --game-mode --ram-limit 750
+
+# Game Mode with process whitelist
+python ram_limiter.py --game-mode --whitelist "game.exe,steam.exe,discord.exe"
+
+# Full example with all options
+python ram_limiter.py --game-mode --ram-limit 1000 --whitelist "game.exe,steam.exe"
+```
+
 ### 🖱️ Interactive Mode
 
 Run the script without arguments to use the interactive menu:
@@ -72,23 +109,8 @@ The menu offers options to:
 4. 💻 Limit Visual Studio Code
 5. 🔄 Limit Discord & Chrome together
 6. ✨ Limit Custom Process(es)
+7. 🎮 Enable Game Mode
 0. 🚪 Exit
-
-### ⌨️ Command Line Options
-
-```sh
-python ram_limiter.py [options]
-
-Options:
-  --discord         🎮 Limit Discord RAM usage
-  --chrome         🌐 Limit Chrome RAM usage
-  --obs            🎥 Limit OBS RAM usage
-  --vscode         💻 Limit Visual Studio Code RAM usage
-  --custom         ✨ Limit RAM usage for custom processes
-  --interval N     ⏱️ Monitoring interval in seconds (default: 5)
-  --interactive    🖱️ Use interactive menu
-  --test           🧪 Run a memory-hogging test
-```
 
 ## 💻 System Requirements
 
