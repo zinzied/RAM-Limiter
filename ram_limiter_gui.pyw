@@ -1,13 +1,12 @@
 import sys
 import json
-from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QCheckBox, QLineEdit, 
+from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QCheckBox, QLineEdit,
                              QLabel, QTextEdit, QGroupBox, QSystemTrayIcon, QMenu, QAction, QFileDialog, QMessageBox, QGridLayout, QProgressBar, QInputDialog)
-from PyQt5.QtCore import QThread, pyqtSignal, Qt
+from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtGui import QIcon
 import psutil
-from ram_limiter import limit_ram_for_process, print_system_memory
+from ram_limiter import limit_ram_for_process
 import pyqtgraph as pg
-import os
 
 class RAMLimiterThread(QThread):
     update_signal = pyqtSignal(str)
@@ -128,19 +127,27 @@ class RAMLimiterGUI(QWidget):
             "chrome": QCheckBox("Chrome"),
             "obs64": QCheckBox("OBS"),
             "Code": QCheckBox("Visual Studio Code"),
-            "msedge": QCheckBox("Microsoft Edge") 
+            "msedge": QCheckBox("Microsoft Edge")
         }
         checkboxes = list(self.process_checkboxes.values())
         for i, checkbox in enumerate(checkboxes):
             row = i // 2
             col = i % 2
             process_layout.addWidget(checkbox, row, col)
-        
+
         # Custom process input with icon
         custom_layout = QHBoxLayout()
         self.custom_process = QLineEdit()
         self.custom_process.setPlaceholderText("Enter custom process name...")
+        self.custom_process_limit = QLineEdit()
+        self.custom_process_limit.setPlaceholderText("Custom process memory limit (%)")
+
+        custom_layout.addWidget(QLabel("Custom Process:"))
         custom_layout.addWidget(self.custom_process)
+        custom_layout.addWidget(QLabel("Memory Limit (%):"))
+        custom_layout.addWidget(self.custom_process_limit)
+
+        process_layout.addLayout(custom_layout, len(self.process_checkboxes) // 2 + 1, 0, 1, 2)
         self.process_group.setLayout(process_layout)
         layout.addWidget(self.process_group)
 
@@ -188,7 +195,7 @@ class RAMLimiterGUI(QWidget):
         input_layout = QHBoxLayout()
         self.interval_input = QLineEdit()
         self.memory_percent_input = QLineEdit()
-        for widget, label in [(self.interval_input, "Interval (s):"), 
+        for widget, label in [(self.interval_input, "Interval (s):"),
                             (self.memory_percent_input, "Max Memory (%):")]:
             container = QHBoxLayout()
             container.addWidget(QLabel(label))
@@ -273,26 +280,26 @@ class RAMLimiterGUI(QWidget):
     def init_game_mode(self):
         self.game_mode_group = QGroupBox("Game Mode")
         game_mode_layout = QVBoxLayout()
-        
+
         self.game_mode_checkbox = QCheckBox("Enable Game Mode")
         self.game_mode_checkbox.stateChanged.connect(self.toggle_game_mode)
-        
+
         self.game_whitelist = QLineEdit()
         self.game_whitelist.setPlaceholderText("Whitelist (comma-separated processes)")
-        
+
         self.ram_limit_input = QLineEdit()
         self.ram_limit_input.setPlaceholderText("RAM limit per process (MB)")
         self.ram_limit_input.setText("500")
-        
+
         game_mode_layout.addWidget(self.game_mode_checkbox)
         game_mode_layout.addWidget(QLabel("RAM Limit (MB):"))
         game_mode_layout.addWidget(self.ram_limit_input)
         game_mode_layout.addWidget(QLabel("Whitelist:"))
         game_mode_layout.addWidget(self.game_whitelist)
-        
+
         self.game_mode_group.setLayout(game_mode_layout)
         self.layout().addWidget(self.game_mode_group)
-        
+
         self.game_mode_thread = None
 
     def toggle_game_mode(self, state):
@@ -300,11 +307,11 @@ class RAMLimiterGUI(QWidget):
             try:
                 ram_limit = int(self.ram_limit_input.text())
                 whitelist = [proc.strip().lower() for proc in self.game_whitelist.text().split(',')]
-                
-                system_processes = ['explorer.exe', 'system', 'systemd', 'svchost.exe', 
+
+                system_processes = ['explorer.exe', 'system', 'systemd', 'svchost.exe',
                                     'csrss.exe', 'winlogon.exe', 'services.exe']
                 whitelist.extend(system_processes)
-                
+
                 self.game_mode_thread = GameModeThread(ram_limit, whitelist)
                 self.game_mode_thread.update_signal.connect(self.update_output)
                 self.game_mode_thread.start()
@@ -333,7 +340,17 @@ class RAMLimiterGUI(QWidget):
 
         custom_process = self.custom_process.text()
         if custom_process:
-            self.start_limiter_thread(custom_process, interval, max_memory_percent)
+            # Use custom limit if provided, otherwise use the global limit
+            custom_limit = self.custom_process_limit.text()
+            if custom_limit:
+                try:
+                    custom_memory_percent = int(custom_limit)
+                    self.start_limiter_thread(custom_process, interval, custom_memory_percent)
+                except ValueError:
+                    self.update_output(f"Invalid custom memory limit: {custom_limit}. Using global limit.")
+                    self.start_limiter_thread(custom_process, interval, max_memory_percent)
+            else:
+                self.start_limiter_thread(custom_process, interval, max_memory_percent)
 
     def start_limiter_thread(self, process_name, interval, max_memory_percent):
         if process_name not in self.limiter_threads or not self.limiter_threads[process_name].isRunning():
@@ -341,7 +358,7 @@ class RAMLimiterGUI(QWidget):
             thread.update_signal.connect(self.update_output)
             thread.start()
             self.limiter_threads[process_name] = thread
-            self.output_area.append(f"Started limiting RAM for {process_name}")
+            self.output_area.append(f"Started limiting RAM for {process_name} (Max: {max_memory_percent}%)")
 
     def stop_limiting(self):
         for thread in self.limiter_threads.values():
@@ -366,6 +383,7 @@ class RAMLimiterGUI(QWidget):
         config = {
             "processes": {name: checkbox.isChecked() for name, checkbox in self.process_checkboxes.items()},
             "custom_process": self.custom_process.text(),
+            "custom_process_limit": self.custom_process_limit.text(),
             "interval": self.interval_input.text(),
             "max_memory_percent": self.memory_percent_input.text(),
             "auto_start": self.auto_start_checkbox.isChecked(),
@@ -390,6 +408,8 @@ class RAMLimiterGUI(QWidget):
                 if name in self.process_checkboxes:
                     self.process_checkboxes[name].setChecked(checked)
             self.custom_process.setText(config["custom_process"])
+            if "custom_process_limit" in config:
+                self.custom_process_limit.setText(config["custom_process_limit"])
             self.interval_input.setText(config["interval"])
             self.memory_percent_input.setText(config["max_memory_percent"])
             self.auto_start_checkbox.setChecked(config["auto_start"])
