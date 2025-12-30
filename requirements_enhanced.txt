@@ -1,0 +1,7 @@
+psutil
+pyqt5
+pyqtgraph
+colorama
+matplotlib
+numpy
+pywin32

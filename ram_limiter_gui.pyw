@@ -2,11 +2,18 @@ import sys
 import json
 from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QCheckBox, QLineEdit,
                              QLabel, QTextEdit, QGroupBox, QSystemTrayIcon, QMenu, QAction, QFileDialog, QMessageBox, QGridLayout, QProgressBar, QInputDialog)
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtCore import QThread, pyqtSignal, QMetaType, Qt
 from PyQt5.QtGui import QIcon
 import psutil
 from ram_limiter import limit_ram_for_process
 import pyqtgraph as pg
+
+# Register QVector<int> metatype to fix Qt signal/slot warnings across threads
+# This is required for pyqtgraph when emitting signals with QVector<int> arguments
+try:
+    QMetaType.type("QVector<int>")
+except:
+    pass
 
 class RAMLimiterThread(QThread):
     update_signal = pyqtSignal(str)

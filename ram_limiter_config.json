@@ -1,0 +1,30 @@
+{
+    "version": "2.0",
+    "profiles": {},
+    "default_profile": "balanced",
+    "process_priorities": {},
+    "game_mode_settings": {
+        "ram_limit": 500,
+        "whitelist": [],
+        "performance_profile": "balanced"
+    },
+    "notification_settings": {
+        "enabled": true,
+        "sound_enabled": false,
+        "tray_notifications": true,
+        "email_alerts": false,
+        "sms_alerts": false
+    },
+    "ui_settings": {
+        "theme": "dark",
+        "refresh_interval": 2,
+        "show_advanced_stats": false
+    },
+    "advanced_settings": {
+        "memory_strategy": "balanced",
+        "optimization_mode": "automatic",
+        "learning_enabled": true,
+        "auto_start": false,
+        "start_minimized": true
+    }
+}
