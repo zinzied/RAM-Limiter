@@ -1,4 +1,6 @@
 # 🚀 RAM Limiter
+<img width="1919" height="1015" alt="image" src="https://github.com/user-attachments/assets/71ec5d38-df76-4b2a-acde-cae1bbea6c36" />
+
 
 **RAM Limiter** is a Windows utility with both GUI 🖥️ and CLI 💻, designed to monitor and limit the RAM usage of selected applications. It helps prevent memory-hungry apps (like Discord, Chrome, OBS, and more) from consuming excessive system resources, improving overall system performance—especially on PCs with limited RAM.
 
